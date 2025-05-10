@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OverVibeViewer - Генератор карт Minecraft</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="/images/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>OverVibeViewer</h1>
+      <p class="subtitle">Генератор интерактивных карт Minecraft</p>
+    </header>
+
+    <main>
+      <section class="generation-panel">
+        <h2>Создание карты</h2>
+        <form id="map-form">
+          <div class="form-group">
+            <label for="version-select">Версия Minecraft:</label>
+            <select id="version-select" name="minecraftVersion" required>
+              <option value="1.21.4" selected>Minecraft 1.21.4</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="world-path">Путь к папке мира:</label>
+            <div class="file-input-container">
+              <input type="text" id="world-path" name="worldPath" required readonly>
+              <button type="button" id="browse-button">Обзор</button>
+            </div>
+            
+            <div id="dropzone" class="dropzone">
+              <div class="icon">⤓</div>
+              <p>Перетащите папку мира Minecraft сюда</p>
+            </div>
+            
+            <p class="help-text">Выберите папку с миром Minecraft (обычно "world", "world_nether" или "world_the_end")</p>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" id="generate-button">Создать карту</button>
+            <button type="button" id="reset-button" style="display: none;">Сбросить</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="console-output" class="console-panel" style="display: none;">
+        <div class="console-header">
+          <h2>Процесс генерации</h2>
+          <div class="console-actions">
+            <button id="clear-console">Очистить</button>
+          </div>
+        </div>
+        
+        <div class="progress-container">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        
+        <div class="console-container">
+          <pre id="console-text"></pre>
+        </div>
+      </section>
+
+      <section id="success-message" class="success-panel" style="display: none;">
+        <h2>Карта создана!</h2>
+        <p>Ваша карта успешно создана и сохранена в:</p>
+        <div class="output-path">
+          <code id="output-path"></code>
+        </div>
+        <p>Откройте файл index.html в этой папке, чтобы просмотреть карту в браузере.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>OverVibeViewer &copy; 2025</p>
+    </footer>
+  </div>
+
+  <!-- File Browser Modal -->
+  <div id="file-browser-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Выберите папку мира Minecraft</h2>
+        <span class="modal-close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="file-browser-path" id="current-path">/host_home</div>
+        <div class="file-browser-up">
+          <button id="go-up-button">⬆️ Вверх</button>
+        </div>
+        <div class="file-browser-list" id="file-list"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-browser">Отмена</button>
+        <button id="select-folder" disabled>Выбрать папку</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
